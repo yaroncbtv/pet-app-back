@@ -6,10 +6,9 @@ const User = require("../models/userModel");
 
 router.post("/register", async (req, res) => {
   try {
-    let { email, password, passwordCheck, displayName } = req.body;
+    let { email, password, passwordCheck, displayName, lastName, phone } = req.body;
     // validate
-    console.log(req.body)
-    if (!email || !password || !passwordCheck)
+    if (!email || !password || !passwordCheck || !lastName || !phone)
       return res.status(400).json({ msg: "Not all fields have been entered." });
     if (password.length < 5)
       return res
@@ -35,6 +34,8 @@ router.post("/register", async (req, res) => {
       email,
       password: passwordHash,
       displayName,
+      lastName,
+      phone
     });
     const savedUser = await newUser.save();
     res.json(savedUser);
@@ -66,6 +67,7 @@ router.post("/login", async (req, res) => {
       user: {
         id: user._id,
         displayName: user.displayName,
+        lastName: user.lastName,
       },
     });
   } catch (err) {
@@ -104,6 +106,18 @@ router.get("/", auth, async (req, res) => {
   res.json({
     displayName: user.displayName,
     id: user._id,
+    lastName: user.lastName,
+
+  });
+});
+router.get("/profilesettings", auth, async (req, res) => {
+  const user = await User.findById(req.user);
+  res.json({
+    displayName: user.displayName,
+    id: user._id,
+    lastName: user.lastName,
+    email: user.email,
+    phone: user.phone
   });
 });
 
