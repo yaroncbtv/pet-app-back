@@ -4,9 +4,47 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/userModel");
 
+router.post('/update', async function (req, res) {
+  
+  const { email, _id, displayName, lastName, phone } = req.body;
+
+  const user = await User.findOne({ email: email });
+
+  var userId = user._id;
+
+  var conditions = {
+   _id : userId 
+  }
+  var update = {
+    displayName: user.displayName,
+    lastName: user.lastName,
+    phone: user.phone,
+    email: user.email,
+   }
+
+  if(email)
+      update.email = email;
+  if(displayName)
+     update.displayName = displayName;
+  if(phone)
+     update.phone = phone;
+  if(lastName)
+     update.lastName = lastName;
+  
+   User.findOneAndUpdate(conditions,update, async function(error,result){
+    if(error){
+      // handle error
+    }else{
+      await console.log(result);
+    }
+  });
+});
+
+
 router.post("/register", async (req, res) => {
   try {
     let { email, password, passwordCheck, displayName, lastName, phone } = req.body;
+    
     // validate
     if (!email || !password || !passwordCheck || !lastName || !phone)
       return res.status(400).json({ msg: "Not all fields have been entered." });
@@ -47,6 +85,7 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body)
 
     // validate
     if (!email || !password)
@@ -120,5 +159,7 @@ router.get("/profilesettings", auth, async (req, res) => {
     phone: user.phone
   });
 });
+
+
 
 module.exports = router;
