@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 5 },
   displayName: { type: String },
   lastName: { type: String },
-  phone: {type:String}
+  phone: {type:String},
+  pets: []
 });
 
 module.exports = User = mongoose.model("user", userSchema);

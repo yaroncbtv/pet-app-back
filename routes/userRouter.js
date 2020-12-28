@@ -41,6 +41,46 @@ router.post('/update', async function (req, res) {
 });
 
 
+
+// router.post('/add-pet', async function (req, res) {
+  
+//   const { email, _id, displayName, lastName, phone } = req.body;
+
+//   const user = await User.findOne({ email: email });
+
+//   var userId = user._id;
+
+//   var conditions = {
+//    _id : userId 
+//   }
+//   var update = {
+//     displayName: user.displayName,
+//     lastName: user.lastName,
+//     phone: user.phone,
+//     email: user.email,
+//    }
+
+//   if(email)
+//       update.email = email;
+//   if(displayName)
+//      update.displayName = displayName;
+//   if(phone)
+//      update.phone = phone;
+//   if(lastName)
+//      update.lastName = lastName;
+  
+//    User.findOneAndUpdate(conditions,update, async function(error,result){
+//     if(error){
+//       // handle error
+//     }else{
+//       await console.log(result);
+//     }
+//   });
+// });
+
+
+
+
 router.post("/register", async (req, res) => {
   try {
     let { email, password, passwordCheck, displayName, lastName, phone } = req.body;
