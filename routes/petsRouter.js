@@ -115,7 +115,8 @@ router.post('/add-pet', async function (req, res) {
     
     router.post("/pet/:id/return", auth, async (req, res) => {
       try {
-         var id = req.params.id;
+         
+        var id = req.params.id;
  
         const filter = { id };
         
@@ -137,29 +138,18 @@ router.post('/add-pet', async function (req, res) {
 
     router.post("/pet/:id/save", auth, async (req, res) => {
       try {
+        
+        const user = await User.findById(req.user);
+
         var id = req.params.id;
  
         const filter = { id };
         
         const pets = await Pets.findOne({ id });
 
-        const user = await User.findById(req.user);
-
         user.pets.push(pets);
         user.save();
 
-
-        // await User.findByIdAndUpdate(
-        //   { _id: req.user },
-        //   {  $push: { pets }  },
-        //   function(err, result) {
-        //     if (err) {
-        //       res.send(err);
-        //     } else {
-        //       res.send(result);
-        //     }
-        //   }
-        // );
         res.json({
           user
       });
@@ -170,6 +160,25 @@ router.post('/add-pet', async function (req, res) {
         .json({ msg: "Only connect users!" });
       }
     });
+
+
+    router.get("/get-user-save-pet", auth, async (req, res) => {
+      try {
+        
+        const user = await User.findById(req.user);
+        const userPets = user.pets;
+        
+        res.json({
+          userPets
+      });
+      
+
+      } catch (error) {
+        res.status(400)
+        .json({ msg: "Only connect users!" });
+      }
+    });
+
 
     router.delete("/pet/:id/delete", auth, async (req, res) => {
       try {
