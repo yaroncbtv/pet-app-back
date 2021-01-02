@@ -32,9 +32,12 @@ router.post('/add-pet', async function (req, res) {
     
     router.get("/get-pet", async (req, res) => {
       try {
-        await Pets.find({}, function(err, pets) {
-          res.send(pets);  
+        const pets = await Pets.find({}, function(err, pets) {
+          
         });
+        res.json({
+          pets
+        }); 
       } catch (error) {
         res.status(400)
         .json({ msg: "Bad Reqest. Only Number!" });
@@ -53,22 +56,27 @@ router.post('/add-pet', async function (req, res) {
         .json({ msg: "Bad Reqest. Only Number!" });
       }
     });
-    router.get("/pet-search/:search", async (req, res) => {
+    router.get("/pet-search/:search?", async (req, res) => {
       try {
+        if(!req.params.search)
+            res.json(null)
+
         var search = req.params.search;
         const pets = await Pets.find({
           $or:[{name: { $regex: search, $options: "i" }},
           {type: { $regex: search, $options: "i" }},
-        ]}, function(err, docs) {
+        ]}, function(err, pets) {
+
           });
           res.json({
-            pets
+              pets
             }); 
       } catch (error) {
         res.status(400)
         .json({ msg: "Bad Reqest. Try again" });
       }
     });
+
 
 
     router.get("/get-pet-by-id/:id", async (req, res) => {

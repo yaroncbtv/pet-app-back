@@ -32,3 +32,7 @@ mongoose.connect(
 
 app.use("/users", require("./routes/userRouter"));
 app.use("/pets", require("./routes/petsRouter"));
+
+app.get('/server', function (req, res) {
+  res.send('Server is Work!')
+})
