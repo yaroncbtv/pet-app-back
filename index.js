@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 // set up express
 
 const app = express();
@@ -32,6 +33,24 @@ mongoose.connect(
 
 app.use("/users", require("./routes/userRouter"));
 app.use("/pets", require("./routes/petsRouter"));
+
+
+app.get("/all-user", async (req, res) => {
+  
+  MongoClient.connect(process.env.MONGODB_CONNECTION_STRING, function(err, db) {
+    assert.equal(null, err);
+    
+    var dbo = db.db("petapp");    //var cursor = db.collection('users').find({});
+    dbo.collection("users").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      res.send(result)
+      
+    });
+    db.close();
+  });
+  
+  });
+
 
 app.get('/server', function (req, res) {
   res.send('Server is Work!')

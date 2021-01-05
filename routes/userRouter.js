@@ -3,7 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/userModel");
-
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 router.post('/update', async function (req, res) {
   
   const { email, _id, displayName, lastName, phone } = req.body;
@@ -106,6 +107,7 @@ router.post("/login", async (req, res) => {
         id: user._id,
         displayName: user.displayName,
         lastName: user.lastName,
+        email: user.email
       },
     });
   } catch (err) {
@@ -145,7 +147,7 @@ router.get("/", auth, async (req, res) => {
     displayName: user.displayName,
     id: user._id,
     lastName: user.lastName,
-
+    email: user.email
   });
 });
 router.get("/profilesettings", auth, async (req, res) => {
@@ -168,18 +170,22 @@ router.get("/:id", auth, async (req, res) => {
 
 
 router.get("/all-user", async (req, res) => {
-  await User.find({}, function(err, users) { 
+  // let test = await User.find({}, function(err, users) { 
   
-    var userMap = {}; 
+  //   var userMap = {}; 
   
-    users.forEach(function(user) { 
-    userMap[user._id] = user; 
-    }); 
+  //   users.forEach(function(user) { 
+  //   // userMap[user._id] = user;
+  //     //res.send(user);
+  //   }); 
     
-    res.send(userMap); 
-    
-    }); 
-  
+  //   }); 
+  MongoClient.connect(url, function(err, client) {
+    assert.equal(null, err);
+    client.close();
+  });
+  var cursor = db.collection('users').find({});
+  console.log(cursor)
   });
 
 

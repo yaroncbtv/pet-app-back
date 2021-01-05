@@ -10,7 +10,7 @@ router.post('/add-pet', async function (req, res) {
       height, weight, color, bio, hypoallergenic, dietaryRestrictions, breed } = req.body;
     
       
-      
+      console.log(req.body)
     const newPet = new Pets({
       id,
       type,
