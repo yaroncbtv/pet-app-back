@@ -170,22 +170,12 @@ router.get("/:id", auth, async (req, res) => {
 
 
 router.get("/all-user", async (req, res) => {
-  // let test = await User.find({}, function(err, users) { 
-  
-  //   var userMap = {}; 
-  
-  //   users.forEach(function(user) { 
-  //   // userMap[user._id] = user;
-  //     //res.send(user);
-  //   }); 
-    
-  //   }); 
   MongoClient.connect(url, function(err, client) {
     assert.equal(null, err);
     client.close();
   });
   var cursor = db.collection('users').find({});
-  console.log(cursor)
+
   });
 
 

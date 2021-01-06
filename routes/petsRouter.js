@@ -2,15 +2,27 @@ const router = require("express").Router();
 const Pets = require("../models/petsModel");
 const auth = require("../middleware/auth");
 const User = require("../models/userModel");
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 
-let id = 0;
+let id;
 router.post('/add-pet', async function (req, res) {
 
+  MongoClient.connect(process.env.MONGODB_CONNECTION_STRING, async function(err, db) {
+    assert.equal(null, err);
+    
+    var dbo = db.db("petapp");    //var cursor = db.collection('users').find({});
+    const collection = dbo.collection("pets");
+    const data = await collection.find().map(doc => doc.id).toArray()
+    
+    if(data.length === 0){
+      id = 0;
+    }else{
+       id = data.length
+    }
+    
     const { type, name, adoptionStatus, picture, 
       height, weight, color, bio, hypoallergenic, dietaryRestrictions, breed } = req.body;
-    
-      
-      console.log(req.body)
     const newPet = new Pets({
       id,
       type,
@@ -28,6 +40,11 @@ router.post('/add-pet', async function (req, res) {
       const savedPets = await newPet.save();
       id++;
       res.json(savedPets);
+
+    db.close();
+  });
+  
+    
     })
     
     router.get("/get-pet", async (req, res) => {
