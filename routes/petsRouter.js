@@ -4,7 +4,6 @@ const auth = require("../middleware/auth");
 const User = require("../models/userModel");
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-
 let id;
 router.post('/add-pet', async function (req, res) {
 
@@ -259,46 +258,38 @@ router.post('/add-pet', async function (req, res) {
         .json({ msg: "Only connect users!" });
       }
     });
-   // <--Admin--> 
-  //   router.put("/edit-pet-by-id/:id", async (req, res) => {
-  //     const { email, _id, displayName, lastName, phone } = req.body;
-
-  // const user = await User.findOne({ email: email });
-
-  // var userId = user._id;
-
-  // var conditions = {
-  //  _id : userId 
-  // }
-  // var update = {
-  //   displayName: user.displayName,
-  //   lastName: user.lastName,
-  //   phone: user.phone,
-  //   email: user.email,
-  //  }
-
-  // if(email)
-  //     update.email = email;
-  // if(displayName)
-  //    update.displayName = displayName;
-  // if(phone)
-  //    update.phone = phone;
-  // if(lastName)
-  //    update.lastName = lastName;
   
-  //  User.findOneAndUpdate(conditions,update, async function(error,result){
-  //   if(error){
-  //     // handle error
-  //   }else{
-  //     await console.log(result);
-  //   }
-  // });
-      // var id = req.params.id;
-      // const pets = await User.findById(id);
-      // res.json({
-      //   pets
-      // });
-    //});
+
+    router.post('/update', async function (req, res) {
+  
+      const { type, name, adoptionStatus, picture, 
+      height, weight, color, bio, hypoallergenic, dietaryRestrictions, breed, id } = req.body;
+     
+      var conditions = {
+       id 
+      }
+      var update = {
+        weight,
+        type,
+        name,
+        adoptionStatus,
+        picture,
+        height,
+        color,
+        bio,
+        hypoallergenic,
+        dietaryRestrictions,
+        breed
+       }
+      
+       Pets.findOneAndUpdate(conditions,update, async function(error,result){
+        if(error){
+          // handle error
+        }else{
+          await console.log(result);
+        }
+      });
+    });
 
 module.exports = router;
 
@@ -314,4 +305,4 @@ module.exports = router;
 
 
 
-module.exports = router;
+
