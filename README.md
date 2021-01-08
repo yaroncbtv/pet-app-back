@@ -4,8 +4,6 @@
 
 - Link to my publish Full Stack App (Back End - (SERVER)): (https://pets-app-server-nodejs.herokuapp.com/server)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Available Scripts
 
 In the project directory, you can run:
